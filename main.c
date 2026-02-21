@@ -30,11 +30,13 @@ Meta_t load_meta(){
         }
         fclose(meta_dat);
     }
+    printf("id is %d\n",meta.id);
+    printf("transaction_id is %d\n",meta.transaction_id);
     return meta;
 }
 int main(){
     Meta_t meta;
-    printf("id is %d\n",meta.id);
-    printf("transaction_id is %d\n",meta.transaction_id);
+    load_meta();
+    
     return 0;
 }
