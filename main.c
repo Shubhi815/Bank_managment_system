@@ -30,6 +30,7 @@ Meta_t load_meta(){
         }
         fclose(meta_dat);
     }
+    return meta;
 }
 int main(){
     Meta_t meta;
