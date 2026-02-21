@@ -1,3 +1,6 @@
+
+#ifndef ACCOUNT_H
+#define ACCOUNT_H
 #include<stdio.h>
 
 typedef enum account_status {Locked =0, unlocked}account_status_E;
@@ -31,3 +34,4 @@ typedef struct
 
 
 int atoi_mine(const char *); 
+#endif
