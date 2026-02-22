@@ -4,34 +4,24 @@
 Meta_t load_meta(){
     FILE *meta_dat;
     Meta_t meta;
-    meta_dat = fopen("meta.dat","r");
+    meta_dat = fopen("meta.dat","rb");
     if (meta_dat == NULL){
-        meta_dat = fopen("meta.dat","w+");
-        fputs("100",meta_dat);
-        fputs("\n",meta_dat);
-        fputs("100",meta_dat);
-        fputs("\n",meta_dat);
-        fclose(meta_dat);
         meta.id = 100;
-        meta.transaction_id = 100;
+        meta.transaction_id =100;
+        meta_dat = fopen("meta.dat","wb+");
+        fwrite(&meta, sizeof(meta), 1, meta_dat);
+        fclose(meta_dat);
     }
     else{
-        char data[50];
-        int i=0;
-        while (fgets(data,50,meta_dat)!=NULL)
-        {
-            if (i ==0){
-                meta.id = atoi_mine(data);
-            }
-            else{
-                meta.transaction_id = atoi_mine(data);
-            }
-            i++;
-        }
+        fread(&meta, sizeof(meta), 1, meta_dat);
         fclose(meta_dat);
+
     }
+    
     return meta;
 }
+
+
 int main(){
     Meta_t meta = load_meta();
     printf("id is %d\n",meta.id);
