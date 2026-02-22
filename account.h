@@ -14,7 +14,7 @@ typedef struct {
 }Address_t;
 
 typedef struct {
-	char Account_number[30];
+	int Account_number;
 	char name[64];
 	char phone_number[16];
 	char pin[8];
