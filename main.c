@@ -39,7 +39,8 @@ int generate_dummy_account(Meta_t *meta){
         return 0;
     }
     Account_t *new_account = malloc(sizeof(Account_t));
-    new_account->Account_number = meta->id;
+    sprintf(new_account->Account_number,"AC00%d",meta->id );
+    //new_account->Account_number = meta->id;
     new_account->balance = 0.00;
     new_account->failed_attempt =0;
     strcpy(new_account->name,"random");
@@ -64,7 +65,7 @@ int see_account(){
     Account_t account;
     int i =0;
     while(fread(&account,sizeof(Account_t),1,account_dat)==1){
-        printf("%d account holder is %d\n",i,account.Account_number);
+        printf("%d account holder is %s\n",i,account.Account_number);
         i++;
         }
 }
