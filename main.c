@@ -69,13 +69,44 @@ int see_account(){
         i++;
         }
 }
+void print_account(Account_t *account){
+    printf("%s\n",account->Account_number);
+    printf("%s\n",account->address.address);
+    printf("%s\n",account->address.city);
+    printf("%s\n",account->address.country);
+    printf("%s\n",account->address.state);
+    printf("%lld\n",account->balance);
+    printf("%d\n",account->failed_attempt);
+    printf("%s\n",account->name);
+    printf("%s\n",account->phone_number);
+    printf("%s\n",account->pin);
+    printf("%d\n",account->status);
+}
+void finding_account_number(char data[]){
+    Account_t account;
+    FILE *fptr = fopen("account.dat","rb");
+    while(fread(&account,sizeof(account),1,fptr)==1){
+        //printf("%s",account.Account_number);
+        if(strcmp(data,account.Account_number)==0){
+            print_account(&account);
+        }
+
+    }
+
+}
 int main(){
     Meta_t meta = load_meta();
-    int ret=generate_dummy_account(&meta);
-    if (ret == 1){
-        next_account_number(&meta);
-        store_account_number(&meta);}
-    printf("%d id is \n", meta.id);
+    char data[20];
     see_account();
+    printf("which account id u want to find ..?\n");
+    scanf("%s",data);
+    printf("finding account number %s\n",data);
+    finding_account_number(data);
+    //int ret=generate_dummy_account(&meta);
+    // if (ret == 1){
+    //     next_account_number(&meta);
+    //     store_account_number(&meta);}
+    //printf("%d id is \n", meta.id);
+    //see_account();
     return 0;
 }
