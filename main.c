@@ -68,6 +68,7 @@ int see_account(){
         printf("%d account holder is %s\n",i,account.Account_number);
         i++;
         }
+    fclose(account_dat);
 }
 void print_account(Account_t *account){
     printf("%s\n",account->Account_number);
@@ -82,31 +83,56 @@ void print_account(Account_t *account){
     printf("%s\n",account->pin);
     printf("%d\n",account->status);
 }
-void finding_account_number(char data[]){
+long int finding_account_number(char data[]){
     Account_t account;
     FILE *fptr = fopen("account.dat","rb");
+    if (fptr == NULL){
+        printf("error occured");
+        //return 0;
+    }
+    int found_flag =0;
     while(fread(&account,sizeof(account),1,fptr)==1){
         //printf("%s",account.Account_number);
         if(strcmp(data,account.Account_number)==0){
-            print_account(&account);
+            printf("pointer pos is %ld\n",ftell(fptr));
+            long int pos=ftell(fptr) -sizeof(Account_t);
+            //print_account(&account);
+            found_flag =1;
+            return pos;
         }
-
     }
-
+    if (found_flag ==0){
+        printf("not able to find");
+        return 0;
+    }
+    fclose(fptr);
+}
+void deposit(long int pos){
+    Account_t account;
+    FILE *fptr = fopen("account.dat","rb+");
+    fseek(fptr,pos,SEEK_SET);
+    fread(&account,sizeof(account),1,fptr);
+    fseek(fptr,pos,SEEK_SET);
+    account.balance=account.balance+500;
+    fwrite(&account,sizeof(Account_t),1,fptr);
+    print_account(&account);
 }
 int main(){
     Meta_t meta = load_meta();
     char data[20];
+    printf("see account");
     see_account();
     printf("which account id u want to find ..?\n");
     scanf("%s",data);
     printf("finding account number %s\n",data);
-    finding_account_number(data);
-    //int ret=generate_dummy_account(&meta);
+    long int pos = finding_account_number(data);
+    deposit(pos);
+
+    // int ret=generate_dummy_account(&meta);
     // if (ret == 1){
     //     next_account_number(&meta);
     //     store_account_number(&meta);}
-    //printf("%d id is \n", meta.id);
-    //see_account();
+    // printf("%d id is \n", meta.id);
+    // see_account();
     return 0;
 }
